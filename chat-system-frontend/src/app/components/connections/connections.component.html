@@ -1,0 +1,21 @@
+<div class="connections">
+    <button (click)="openCreateChannelModal()">Create Channel</button>
+    <button (click)="openAddFriendModal()">Add Friend</button>
+    <app-create-channel *ngIf="isCreateChannelModalVisible" (createChannel)="onCreateChannel($event)"
+        (cancel)="closeCreateChannelModal()"></app-create-channel>
+    <app-add-friend *ngIf="isAddFriendModalVisible" [friends]="friends" (addFriend)="onAddFriend($event)"
+        (cancel)="closeAddFriendModal()"></app-add-friend>
+</div>
+<div class="connections">
+    <h2>Channels & Friends</h2>
+    <div class="list">
+        <ul>
+            <li *ngFor="let channel of channels" (click)="selectChannel(channel.id)">
+                {{ channel.name }}
+            </li>
+            <li *ngFor="let friend of friends" (click)="selectFriend(friend.id)">
+                {{ friend.firstName }} {{ friend.lastName }}
+            </li>
+        </ul>
+    </div>
+</div>

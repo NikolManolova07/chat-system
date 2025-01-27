@@ -1,0 +1,19 @@
+<div class="navbar">
+  <div class="navbar-title">
+    Chat System App
+  </div>
+  <div *ngIf="user" class="navbar-user">
+    Hello, {{ user.firstName }}!
+  </div>
+</div>
+<div class="app-container">
+  <div class="sidebar">
+    <app-connections #connections (selection)="onSelection($event.type, $event.id)"></app-connections>
+  </div>
+  <div class="main-content">
+    <app-messages [type]="selectedType" [id]="selectedId"></app-messages>
+  </div>
+  <div class="settings-panel">
+    <app-settings [type]="selectedType" [id]="selectedId" (refreshChannels)="onRefreshChannels(); connections.loadConnections()"></app-settings>
+  </div>
+</div>

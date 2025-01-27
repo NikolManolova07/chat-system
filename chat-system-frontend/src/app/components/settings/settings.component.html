@@ -1,0 +1,74 @@
+<div *ngIf="type === 'channel' || type === 'friend'; else noSettings">
+    <h2>{{ type === 'channel' ? 'Channel Settings' : 'Friendship Settings' }}</h2>
+    <div *ngIf="type === 'channel' && channel; else friendSettings">
+        <h3>
+            {{ channel.name }}
+        </h3>
+        <table class="members">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-wrapper">
+                <tr *ngFor="let member of members">
+                    <td>{{ member.user.firstName }}</td>
+                    <td>{{ member.user.lastName }}</td>
+                    <td><strong>{{ member.role }}</strong></td>
+                    <td *ngIf="hasPermissionsForMember(member); else noActions">
+                        <button class="make-admin-btn" (click)="makeAdmin(member)">Make Admin</button>
+                        <button class="remove-member-btn" (click)="removeMember(member)">Remove Member</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="settings" *ngIf="isOwnerOrAdmin(); else noActions">
+            <div class="button-container">
+                <button class="add-member-btn" (click)="openAddMemberModal()">Add Member</button>
+                <button class="update-btn" (click)="openUpdateChannelModal()">Update Channel</button>
+                <button *ngIf="isOwner()" class="delete-btn" (click)="openDeleteChannelModal()">Delete Channel</button>
+            </div>
+            <app-add-member *ngIf="isAddMemberModalVisible" [members]="members" (addMember)="onAddMember($event)"
+                (cancel)="closeAddMemberModal()"></app-add-member>
+            <app-update-channel *ngIf="isUpdateChannelModalVisible" [currentChannelName]="channel.name"
+                (updateChannel)="onUpdateChannel($event)" (cancel)="closeUpdateChannelModal()"></app-update-channel>
+            <app-delete-channel *ngIf="isDeleteChannelModalVisible" (deleteConfirmed)="onDeleteChannel()"
+                (deleteCanceled)="closeDeleteChannelModal()"></app-delete-channel>
+        </div>
+    </div>
+</div>
+<ng-template #noSettings>
+    <h2>Settings</h2>
+</ng-template>
+<ng-template #friendSettings>
+    <div *ngIf="friend">
+        <table class="members">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ friend.user.username }}</td>
+                    <td>{{ friend.user.firstName }}</td>
+                    <td>{{ friend.user.lastName }}</td>
+                </tr>
+                <tr>
+                    <td>{{ friend.friend.username }}</td>
+                    <td>{{ friend.friend.firstName }}</td>
+                    <td>{{ friend.friend.lastName }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Friends since: </strong> {{ friend.createdAt }}</p>
+    </div>
+</ng-template>
+<ng-template #noActions>
+    <td></td>
+</ng-template>

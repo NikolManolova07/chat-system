@@ -1,0 +1,15 @@
+<div class="modal">
+    <div class="modal-content">
+        <h3>Add Member</h3>
+        <input type="text" [(ngModel)]="keyword" (input)="searchUsers()" placeholder="Search users by keyword" />
+        <div class="user-list">
+            <div *ngFor="let user of users" class="user-item">
+                <span>{{ user.firstName }} {{ user.lastName }}</span>
+                <button class="member-btn" [disabled]="isAlreadyMember(user.id)" (click)="onAdd(user.id)">
+                    {{ isAlreadyMember(user.id) ? 'Already Member' : 'Add Member' }}
+                </button>
+            </div>
+        </div>
+        <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+    </div>
+</div>

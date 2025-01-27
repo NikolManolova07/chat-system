@@ -1,0 +1,15 @@
+<div class="modal">
+    <div class="modal-content">
+        <h3>Add Friend</h3>
+        <input type="text" [(ngModel)]="keyword" (input)="searchUsers()" placeholder="Search users by keyword" />
+        <div class="user-list">
+            <div *ngFor="let user of users" class="user-item">
+                <span>{{ user.firstName }} {{ user.lastName }}</span>
+                <button class="friend-btn" [disabled]="isAlreadyFriend(user.id)" (click)="onAdd(user.id)">
+                    {{ isAlreadyFriend(user.id) ? 'Already Friends' : 'Add Friend' }}
+                </button>
+            </div>
+        </div>
+        <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+    </div>
+</div>

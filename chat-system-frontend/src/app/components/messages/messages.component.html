@@ -1,0 +1,25 @@
+<div class="message-container">
+    <div *ngIf="type === 'channel' || type === 'friend'; else noMessages">
+        <h2 class="message-header">{{ type === 'channel' ? 'Channel Messages' : 'Direct Messages' }}</h2>
+        <div class="messages">
+            <div class="message" *ngFor="let message of messages"
+                [ngClass]="{ 'message-right': message.sender.id === userId, 'message-left': message.sender.id !== userId }">
+                <div class="message-sender">
+                    {{ message.sender.username }}:
+                </div>
+                <div class="message-content">
+                    {{ message.content }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noMessages>
+        <h2 class="message-header">Messages</h2>
+        <div class="messages"></div>
+    </ng-template>
+</div>
+<app-modal *ngIf="isMessageModalVisible" [message]="errorMessage" (closeModal)="closeModal()"></app-modal>
+<div class="message-input-container">
+    <input class="message-input" [(ngModel)]="newMessage" placeholder="Type a message..." />
+    <button class="send-btn" (click)="sendMessage()">Send</button>
+</div>
